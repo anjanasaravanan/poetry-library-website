@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    .jumbotron
+        .container
+
+            h1= title
+
+    .container
+        ul
+            each category in category_list
+                p
+                    a(href=category.url) #{category.name}
+            else
+                p No categories found.

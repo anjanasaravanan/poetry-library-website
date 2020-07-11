@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    .jumbotron
+        .container
+
+
+            h1= title
+
+            form(method='POST' action='')
+                label(for='name') Search by last name: 
+                input#firstname.form-control(type='text' placeholder='Enter last name here' name='name' required='true' value=(undefined===author ? '' : author.name))
+
+                button.btn.btn-primary(type='submit') Submit
+            if not_found
+                | No authors match your search query.
+    .container
+        ul
+            each author in author_list
+                p
+                    a(href=author.url) #{author.name}
+                    //- |   (#{author.date_of_birth_formatted} - #{author.date_of_death_formatted})
+
+
+            else
+                p No authors found.

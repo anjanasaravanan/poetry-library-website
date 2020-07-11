@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  //-h1(style="font-size: 50px")= title
+  //-p #[em A community resource for the study, composition, and performance of poetry.]
+  .jumbotron
+    .container
+      h1 Welcome to the Sims Library of Poetry!
+      p
+        | Explore our growing collection of anthologies, chapbooks, periodicals and more, or visit our main site to support our ongoing efforts.
+      p
+        a.btn.btn-lg.btn-primary(href='https://www.simslibraryofpoetry.org', role='button') Library Homepage »
+
+    //- search catalog feature
+
+  
+
+  .container
+    //-h1 Library Inventory
+
+  
+    //-img(src='http://localhost:3000/images/default-cover.jpg', width='80')
+
+    if error
+      p There was a problem displaying the inventory. Please check back later.
+    else
+      //- p View our catalog to explore our growing collection.
+
+      ul
+        //- p(style='font-size: 30px') !{data.book_count} 
+        //-   | #[strong Catalogued Books of Poetry]
+        //- p(style='font-size: 30px') !{data.book_instance_available_count} 
+        //-   | #[strong Copies Available for Checkout] 
+        p(style='font-size: 30px') !{data.book_instance_count}   
+          | #[strong Catalogued Books of Poetry By]   !{data.author_count}   
+          | #[strong Featured Authors In] !{data.category_count} 
+          | #[strong Categories]
+

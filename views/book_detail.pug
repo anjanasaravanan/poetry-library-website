@@ -1,0 +1,55 @@
+extends layout
+
+block content
+  .jumbotron
+    .container
+      a.button.btn.btn-primary(href='/books') Back to Catalog »
+
+      h1 #{book.title}
+
+      
+      img(src=book.image, align='left', width='150', height='220', hspace='20')
+
+      br 
+      p #[strong Author(s):] 
+        for author, index in book.authors
+          a(href=author.url) #{author.name}
+          if index < book.authors.length - 1
+            |; 
+      p #[strong ISBN:] #{(book.isbn=='' ? 'No ISBN found.' : book.isbn)}
+      p #[strong Category:]&nbsp;
+        each val, index in book.category
+          a(href=val.url) #{val.name}
+          if index < book.category.length - 1
+            |, 
+      p #[strong Available copies:] #{book_instances.length}
+
+      if currentUser && currentUser.isAdmin
+        .row
+          a.btn.btn-md.btn-primary(href=book.url+'/delete', role='button') Delete Book »
+          a.btn.btn-md.btn-primary(href=book.url+'/update', role='button') Update Book »
+      //- h4 Copies
+      //- each val in book_instances
+      //-   hr
+      //-   if val.status=='Available'
+      //-     p.text-success #{val.status}
+      //-   else if val.status=='Maintenance'
+      //-     p.text-danger #{val.status}
+      //-   else
+      //-     p.text-warning #{val.status} 
+      //-   p #[strong Imprint:] #{val.imprint}
+      //-   if val.status!='Available'
+      //-     p #[strong Due back:] #{val.due_back}
+      //-   p #[strong Id:]&nbsp;
+      //-     a(href=val.url) #{val._id}
+ 
+      //- else
+      //-   p There are no copies of this book in the library.
+  .container
+    p #[strong Summary:] #{(book.description===undefined ? '' : book.description.replace(/&#x27;/g, "'"))}
+
+
+  //- p
+  //-   form(method='POST' action='/upload' enctype='multipart/form-data')
+  //-   input(type='file' accept='image/*' name='photo')
+  //-   button.btn.btn-primary(type='submit' value='upload') Upload cover image

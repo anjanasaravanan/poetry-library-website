@@ -1,0 +1,11 @@
+extends layout
+
+block content
+
+    p If you delete this author, you will also delete the books on which they are the only author. Proceed?
+
+    form(method='POST' action='')
+        div.form-group
+            input#authorid.form-control(type='hidden', name='authorid', required='true', value=author._id)
+
+        button.btn.btn-primary(type='submit') Delete

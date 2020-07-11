@@ -1,0 +1,14 @@
+extends layout
+
+block content
+
+    .jumbotron
+        .container
+            h1 Welcome to the Librarian Portal!
+            p
+                | Enter books, edit author info, and help maintain our library.
+            p
+                a.btn.btn-lg.btn-primary(href='/book/create', role='button') ISBN Book Entry »
+            .row
+                a.btn.btn-md.btn-primary(href='/book/manual-entry', role='button') Manual Book Entry »
+                a.btn.btn-md.btn-primary(href='/books', role='button') Catalog »

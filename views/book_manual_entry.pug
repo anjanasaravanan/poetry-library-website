@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Title:
+      input#title.form-control(type='text', placeholder='Name of book' name='title' required='true' value=(undefined===book ? '' : book.title) )
+    div.form-group
+      label Author(s):
+        - for(i=0; i<10; i++)
+            input#authors.form-control(type='text' placeholder='First name Last name' name='authors' value='')
+        
+        
+    div.form-group
+      label(for='description') Summary:
+      textarea#description.form-control(type='textarea', placeholder='Summary' name='description' rows='3') #{undefined===book ? '' : book.summary.replace(/&#x27;/g, "'")}
+    div.form-group
+      label(for='isbn') ISBN:
+      input#isbn.form-control(type='text', placeholder='ISBN13' name='isbn' value=(undefined===book ? '' : book.isbn)) 
+    div.form-group
+        label(for='num_copies') Number of copies:
+        input#num_copies.form-control(type='number', placeholder='Number of copies' name='num_copies' value=(undefined===book ? '' : book.num_copies) required='true')
+    div.form-group
+      label Category:
+      div
+        for category in category_list
+          div(style='display: inline; padding-right:10px;')
+            input.checkbox-input(type='checkbox', name='category', id=category._id, value=category._id, checked=category.checked )
+            label(for=category._id) #{category.name}
+    button.btn.btn-primary(type='submit') Submit
+
+  if msg
+    p #{msg}

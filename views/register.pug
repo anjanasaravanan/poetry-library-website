@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+    h1 Register
+
+    if error
+        p #{error}
+
+    form(method='POST' action='/register')
+        .form-group
+            label(for='username') Username 
+            input(type='text' name='username' required='true')
+        .form-group
+            label(for='password') Password 
+            input(type='password' name='password' required='true')
+        .form-group
+            label(for='adminCode') Admin Code 
+            input(type='text' name='adminCode')
+        button.btn.btn-primary(type='submit') Register

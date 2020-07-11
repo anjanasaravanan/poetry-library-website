@@ -1,0 +1,42 @@
+extends layout
+
+block content
+    .jumbotron
+        .container
+            a.button.btn.btn-primary(href='/authors') Back to Author List »
+            h1 #{author.name}
+            p #{author.lifespan}
+
+            div(style='margin-left:20px;margin-top:20px')
+
+    .container
+        h4 #{author_books.length} book(s)
+        
+        dl
+            each book in author_books
+                hr
+                .container
+                    a(href=book.url)
+                        img(src=book.image, align="left", hspace="50", height='220', width='150')
+                    dt
+                        a(href=book.url) #{book.title}
+                    dd #{(book.description===undefined ? '' : (book.description).substr(0, 200))}...
+                    br
+                    each val in book.category
+                        a(href=val.url) #{val.name}
+                
+
+            else
+                p This author has no books.
+   
+    br
+    br
+    br
+    hr
+    br
+    br
+   
+    p
+    a(href=author.url+'/delete') Delete Author 
+    p
+    a(href=author.url+'/update') Update Author

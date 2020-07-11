@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  .jumbotron
+    .container
+      h1= title
+      br
+      br
+    
+    .container
+      form(method='POST' action='')
+        label(for='title') Search by book title: 
+        input#firstname.form-control(type='text' placeholder='Enter title or keywords here' name='title' required='true' value=(undefined===book ? '' : book.title))
+        br
+        button.btn.btn-primary(type='submit') Submit
+        br
+      if not_found
+          | No books match your search query.
+
+  
+  
+  ul
+    - book_list.sort(function(a, b) {let textA = a.authors[0].family_name.toUpperCase(); let textB = b.authors[0].family_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+    hr
+    each book in book_list
+      .container
+        a(href=book.url)
+          img(src=book.image, align="left", hspace="20", width='150', height='220')
+        li(style="list-style-type: none;") 
+          a(href=book.url, style={'font-size':'36px', 'color': 'black'}) #{book.title}
+          br
+          each author, index in book.authors
+            a(href=author.url) #{author.name}
+            if index < book.authors.length - 1
+              |; 
+          br
+          p #{(book.description===undefined ? '' : (book.description).substr(0, 200))}...
+          if book.description===undefined
+            br
+            br
+          p Copies: #{book.num_copies}
+          each val in book.category
+            a(href=val.url) #{val.name}
+          //- if val.status=='Available'
+          //-     span.text-success #{val.status}
+          //- else if val.status=='Maintenance'
+          //-     span.text-danger #{val.status}
+          //- else
+          //-     span.text-warning #{val.status}
+          br
+          br
+          br
+          br
+        hr
+    else
+      p No results found.
