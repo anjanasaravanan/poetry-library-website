@@ -150,7 +150,7 @@ exports.book_create_post = (req, res, next) => {
                 category: req.body.category,
                 publisher: book_data.publisher,
                 publish_date: book_data.publishedDate,
-                image: (book_data.imageLinks ? book_data.imageLinks.thumbnail : 'http://localhost:3000/images/default-cover.jpg'),
+                image: (book_data.imageLinks ? book_data.imageLinks.thumbnail : '../public/images/default-cover.jpg'),
                 num_copies: req.body.num_copies
             });
             console.log('original listAuthors');
@@ -386,7 +386,7 @@ exports.book_update_post = (req, res, next) => {
             category: (typeof req.body.category==='undefined') ? [] : req.body.category,
             num_copies: req.body.num_copies,
             _id: req.params.id, //This is required, or a new ID will be assigned!
-            image: (req.body.image ? req.body.image : 'http://localhost:3000/images/default-cover.jpg')
+            image: (req.body.image ? req.body.image : '../public/images/default-cover.jpg')
             //image: (typeof req.body.image==='undefined') ? 'http://localhost:3000/images/default-cover.jpg' : req.body.image
         });
 
