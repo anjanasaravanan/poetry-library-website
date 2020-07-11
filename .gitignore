@@ -1,6 +1,6 @@
 .env
-/node-modules
+/node_modules
 npm-debug.log
-node-modules
+node_modules
 
 
