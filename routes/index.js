@@ -46,7 +46,7 @@ router.post('/book/create', middleware.isLibrarian, book_controller.book_create_
 router.get('/book/manual-entry', middleware.isLibrarian, book_controller.book_manual_get);
 
 // POST request for manual book entry
-router.post('/book/manual-entry', middleware.isLibrarian, book_controller.book_manual_post);
+router.post('/book/manual-entry', middleware.isLibrarian, middleware.upload.single('image'), book_controller.book_manual_post);
 
 // GET request to delete Book.
 router.get('/book/:id/delete', middleware.isLibrarian, book_controller.book_delete_get);

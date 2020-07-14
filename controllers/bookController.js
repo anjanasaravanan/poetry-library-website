@@ -3,6 +3,8 @@ var Author = require('../models/author');
 var Category = require('../models/category');
 var BookInstance = require('../models/bookinstance');
 
+var middleware = require('../middleware/index');
+
 var async = require('async');
 var isbn = require('node-isbn');
 
@@ -13,6 +15,7 @@ const { sanitizeBody } = require('express-validator/filter');
 const bookinstance = require('../models/bookinstance');
 const { category_list } = require('./categoryController');
 const { Promise } = require('bluebird');
+const { cloudinary } = require('../middleware');
 
 exports.index = (req, res) => {
     async.parallel({
@@ -488,7 +491,7 @@ exports.book_manual_post = (req, res, next) => {
             category: req.body.category,
             //publisher: req.body.publisher,
             //publish_date: req.body.publishedDate,
-            image: req.file, //TESTING.
+            //image: req.file, //TESTING.
             //image: book_data.imageLinks.thumbnail,  // add publisher, publish date, image features.
             num_copies: req.body.num_copies
         });
@@ -531,7 +534,15 @@ exports.book_manual_post = (req, res, next) => {
             newCopy.save((err) => {if (err) {return next(err);}});
         }
         //save book
-        return newBook.save()
+        //return middleware.cloudinary.uploader.upload(req.file.path)
+    
+
+        return newBook.save();
+    }).then((newBook) => {
+        middleware.cloudinary.uploader.upload(req.file.path, (result) => {
+            newBook.image = result.secure_url;
+        });
+        return newBook.save();
     }).then((newBook) => {
         res.redirect(newBook.url);
     }).catch((err) => {if (err) {return next(err);}});

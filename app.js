@@ -13,19 +13,13 @@ passport = require('passport'),
 session = require('express-session'),
 flash = require('connect-flash'),
 LocalStrategy = require('passport-local');
-helmet = require('helmet');
 
 var User = require('./models/user')
 
 
 var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
-//var catalogRouter = require('./routes/catalog');
-
-//var upload = multer({dest: __dirname + '/public/images/'});
 
 var app = express();
-//app.use(auth)
 
 app.use(helmet());
 
@@ -37,6 +31,8 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 mongoose.Promise = require('bluebird');
+
+
 
 
 // view engine setup
