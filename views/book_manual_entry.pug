@@ -3,7 +3,10 @@ extends layout
 block content
   h1= title
 
-  form(method='POST' action='')
+  form(method='POST' action='' enctype='multipart/form-data')
+    div.form-group
+      label(for='image') Cover Image
+      input(type='file' id='image' name='image' accept='image/*')
     div.form-group
       label(for='title') Title:
       input#title.form-control(type='text', placeholder='Name of book' name='title' required='true' value=(undefined===book ? '' : book.title) )
