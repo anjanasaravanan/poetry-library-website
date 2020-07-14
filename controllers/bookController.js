@@ -539,6 +539,11 @@ exports.book_manual_post = (req, res, next) => {
 
         return newBook.save();
     }).then((newBook) => {
+        middleware.cloudinary.uploader.upload(req.file.path)
+        .then((result) => {
+            newBook.image = result.secure_url
+        })
+        return newBook.save();
         middleware.cloudinary.uploader.upload(req.file.path, (result) => {
             newBook.image = result.secure_url;
         });
