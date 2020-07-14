@@ -12,7 +12,8 @@ logger = require('morgan'),
 passport = require('passport'),
 session = require('express-session'),
 flash = require('connect-flash'),
-LocalStrategy = require('passport-local');
+LocalStrategy = require('passport-local'),
+helmet = require('helmet');
 
 var User = require('./models/user')
 
