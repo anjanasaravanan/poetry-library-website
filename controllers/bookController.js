@@ -539,16 +539,21 @@ exports.book_manual_post = (req, res, next) => {
 
         return newBook.save();
     }).then((newBook) => {
-        middleware.cloudinary.uploader.upload(req.file.path)
-        .then((result) => {
-            newBook.image = result.secure_url
-        })
-        return newBook.save();
+        console.log(newBook);
         middleware.cloudinary.uploader.upload(req.file.path, (result) => {
             newBook.image = result.secure_url;
         });
+        newBookUpdateQuery = Book.findByIdAndUpdate(newBook._id, newBook, {})
+        return newBookUpdateQuery
+
+
+        // return newBook.save();
+        // middleware.cloudinary.uploader.upload(req.file.path, (result) => {
+        //     newBook.image = result.secure_url;
+        //});
         return newBook.save();
     }).then((newBook) => {
+        console.log(newBook);
         res.redirect(newBook.url);
     }).catch((err) => {if (err) {return next(err);}});
 }
