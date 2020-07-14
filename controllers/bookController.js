@@ -389,7 +389,7 @@ exports.book_update_post = (req, res, next) => {
             category: (typeof req.body.category==='undefined') ? [] : req.body.category,
             num_copies: req.body.num_copies,
             _id: req.params.id, //This is required, or a new ID will be assigned!
-            image: (req.body.image ? req.body.image : '../public/images/default-cover.jpg')
+            //image: (req.body.image ? req.body.image)
             //image: (typeof req.body.image==='undefined') ? 'http://localhost:3000/images/default-cover.jpg' : req.body.image
         });
 
@@ -424,12 +424,25 @@ exports.book_update_post = (req, res, next) => {
             return;
         }
         console.log(newBook);
-        newBookUpdateQuery = Book.findByIdAndUpdate(req.params.id, newBook, {})
-        return newBookUpdateQuery 
+        return Book.findByIdAndUpdate(req.params.id, newBook, {})
     }).then((updatedBook) => {
-        console.log(updatedBook);
-        res.redirect(updatedBook.url)
+        if (req.file) { // new image file uploaded
+            middleware.cloudinary.uploader.upload(req.file.path)
+            .then((result) => {
+                //res.redirect(result.secure_url);
+                return Book.findByIdAndUpdate(updatedBook._id, {'image': result.secure_url});
+            })
+            .then((updatedBookWithImage) => {
+                console.log(updatedBookWithImage);
+                res.redirect(updatedBookWithImage.url);
+            });
+        }
+        else { // if no new cover image
+            console.log(updatedBook);
+            res.redirect(updatedBook.url);
+        }
     }).catch((err) => {if (err) {return next(err);}});
+  
 };
 
 // Handle manual book entry on get
@@ -491,7 +504,7 @@ exports.book_manual_post = (req, res, next) => {
             category: req.body.category,
             //publisher: req.body.publisher,
             //publish_date: req.body.publishedDate,
-            //image: req.file, //TESTING.
+            image: '', //open to receive updates later
             //image: book_data.imageLinks.thumbnail,  // add publisher, publish date, image features.
             num_copies: req.body.num_copies
         });
@@ -534,26 +547,16 @@ exports.book_manual_post = (req, res, next) => {
             newCopy.save((err) => {if (err) {return next(err);}});
         }
         //save book
-        //return middleware.cloudinary.uploader.upload(req.file.path)
-    
-
         return newBook.save();
     }).then((newBook) => {
         console.log(newBook);
-        middleware.cloudinary.uploader.upload(req.file.path, (result) => {
-            newBook.image = result.secure_url;
+        // upload cover image
+        middleware.cloudinary.uploader.upload(req.file.path)
+        .then((result) => {
+            return Book.findByIdAndUpdate(newBook._id, {'image': result.secure_url});
+        }).then((updatedBook) => {
+            console.log(updatedBook);
+            res.redirect(updatedBook.url);
         });
-        newBookUpdateQuery = Book.findByIdAndUpdate(newBook._id, newBook, {})
-        return newBookUpdateQuery
-
-
-        // return newBook.save();
-        // middleware.cloudinary.uploader.upload(req.file.path, (result) => {
-        //     newBook.image = result.secure_url;
-        //});
-        return newBook.save();
-    }).then((newBook) => {
-        console.log(newBook);
-        res.redirect(newBook.url);
     }).catch((err) => {if (err) {return next(err);}});
 }

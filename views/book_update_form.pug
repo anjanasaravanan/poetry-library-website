@@ -3,14 +3,13 @@ extends layout
 block content
   h1= title
 
-  img(src=book.image)
+  p Current cover image
+  img(src=book.image, width='150', height='220')
 
-  form(method='POST' action='')
+  form(method='POST' action='' enctype='multipart/form-data')
     div.form-group
-      label(for='image') Image:
-        input#image.form-control(type='file', name='image' value=book.image)
-      if book.image
-        img(src=book.image)
+      label(for='image') Upload new cover image
+        input#image.form-control(type='file', name='image' accept='image/*')
     div.form-group
       label(for='title') Title:
       input#title.form-control(type='text', placeholder='Name of book' name='title' required='true' value=book.title)

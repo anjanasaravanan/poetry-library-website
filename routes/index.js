@@ -58,7 +58,7 @@ router.post('/book/:id/delete', middleware.isLibrarian, book_controller.book_del
 router.get('/book/:id/update', middleware.isLibrarian, book_controller.book_update_get);
 
 // POST request to update Book.
-router.post('/book/:id/update', middleware.isLibrarian, book_controller.book_update_post);
+router.post('/book/:id/update', middleware.isLibrarian, middleware.upload.single('image'), book_controller.book_update_post);
 
 // GET request for one Book.
 router.get('/book/:id', book_controller.book_detail);
