@@ -1,6 +1,10 @@
 extends layout
 
 block content
+  if message
+    p #{message}
+
+
   .jumbotron
     .container
       a.button.btn.btn-primary(href='/books') Back to Catalog »

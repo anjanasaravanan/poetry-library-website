@@ -16,6 +16,7 @@ const bookinstance = require('../models/bookinstance');
 const { category_list } = require('./categoryController');
 const { Promise } = require('bluebird');
 const { cloudinary } = require('../middleware');
+const book = require('../models/book');
 
 exports.index = (req, res) => {
     async.parallel({
@@ -103,7 +104,7 @@ exports.book_create_get = (req, res, next) => {
     Category.find()
     .exec((err, list_categories) => {
         if (err) {return next(err);}
-        res.render('book_form', {title: 'Create book', category_list: list_categories})
+        res.render('book_form', {title: 'ISBN Book Entry', category_list: list_categories})
     })
 };
 
@@ -124,9 +125,12 @@ exports.book_create_post = (req, res, next) => {
     isbn.resolve(req.body.isbn).then((book_data) => {
         Book.findOne({
             isbn: req.body.isbn
-        }).then((found_book) => {
+        }).populate('category').populate('author')
+        .then((found_book) => {
             if (found_book) {
-                res.redirect(found_book.url);
+                //res.redirect(found_book.url);
+                //found_book.populate('category').populate('author');
+                res.render('book_form', {book: found_book, category_list: found_book.category, message: 'That book already exists!'})
             }
             else {
                 var authorQueries = [];
@@ -158,24 +162,26 @@ exports.book_create_post = (req, res, next) => {
             });
             console.log('original listAuthors');
             console.log(listAuthors);
-            for(i=0; i<listAuthors.length; i++){
-                if(listAuthors[i]==null){ // a new author
-                    author = book_data.authors[i]
-                    nameArray = formatName(author);
-                    new_first_name = nameArray[0];
-                    new_family_name = nameArray[1];
-                    newAuthor = new Author({
-                        first_name: new_first_name,
-                        family_name: new_family_name,
-                        books: [newBook._id]
-                    });
-                    //save new authors
-                    listAuthors[i] = newAuthor;
-                    newAuthor.save((err)=>{if (err) {return next(err);}});
-                }
-                else { // old authors
-                    listAuthors[i].books.push(newBook); // add book to author's books.
-                }   
+            if (listAuthors){ // messy
+                for(i=0; i<listAuthors.length; i++){
+                    if(listAuthors[i]==null){ // a new author
+                        author = book_data.authors[i]
+                        nameArray = formatName(author);
+                        new_first_name = nameArray[0];
+                        new_family_name = nameArray[1];
+                        newAuthor = new Author({
+                            first_name: new_first_name,
+                            family_name: new_family_name,
+                            books: [newBook._id]
+                        });
+                        //save new authors
+                        listAuthors[i] = newAuthor;
+                        newAuthor.save((err)=>{if (err) {return next(err);}});
+                    }
+                    else { // old authors
+                        listAuthors[i].books.push(newBook); // add book to author's books.
+                    }  
+                } 
             }
             console.log('listAuthors');
             console.log(listAuthors);

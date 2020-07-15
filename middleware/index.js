@@ -7,7 +7,7 @@ exports.isLibrarian = (req, res, next) => {
             res.redirect('/')
         }
     } else {
-        res.send('You do not have permission to access this page.')
+        res.send('You do not have permission to access this page.') // render error page with redirect button to home.
     }
 }
 
