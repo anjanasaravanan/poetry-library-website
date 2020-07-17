@@ -62,7 +62,7 @@ exports.book_list_post = (req, res, next) => {
     .then((allBooks) => {
         searchResults = [];
         allBooks.forEach((book) => {
-            if(book.title.includes(req.body.title) || book.title==req.body.title){
+            if(book.title.toLowerCase().includes(req.body.title.toLowerCase()) || book.title.toLowerCase()==req.body.title.toLowerCase()){
                 searchResults.push(book);
             }
         });
@@ -480,7 +480,8 @@ exports.book_manual_post = (req, res, next) => {
         req.body.authors.splice(cropIndex);
 
     Book.findOne({
-        title: req.body.title // only crossreferencing by title, change later.
+        title: req.body.title,
+        isbn: req.body.isbn // crossreferencing by title & isbn, messy
     }).then((foundBook) => {
         if (foundBook) {
             res.redirect(foundBook.url);

@@ -25,7 +25,7 @@ exports.author_list_post = function (req, res, next) {
     .then((allAuthors) => {
         searchResults = [];
         allAuthors.forEach((author) => {
-            if(author.family_name.includes(req.body.name) || author.first_name.includes(req.body.name) || author.name.includes(req.body.name) || author.name === req.body.name){
+            if(author.family_name.toLowerCase().includes(req.body.name.toLowerCase()) || author.first_name.toLowerCase().includes(req.body.name.toLowerCase()) || author.name.toLowerCase().includes(req.body.name.toLowerCase()) || author.name.toLowerCase() === req.body.name.toLowerCase()){
                 searchResults.push(author);
             }
         });
