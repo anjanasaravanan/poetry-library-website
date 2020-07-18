@@ -157,7 +157,7 @@ exports.book_create_post = (req, res, next) => {
                 category: req.body.category,
                 publisher: book_data.publisher,
                 publish_date: book_data.publishedDate,
-                image: (book_data.imageLinks ? book_data.imageLinks.thumbnail : '../public/images/default-cover.jpg'),
+                image: (book_data.imageLinks ? book_data.imageLinks.thumbnail : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flipkart.com%2Fintroductory-principles-plant-breeding%2Fp%2Fitmb8853b7b2e869&psig=AOvVaw0f7ddlWt0vHyrYtOjgYiw1&ust=1595189504743000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPjJ05DO1-oCFQAAAAAdAAAAABAD'),
                 num_copies: req.body.num_copies
             });
             console.log('original listAuthors');
@@ -511,7 +511,7 @@ exports.book_manual_post = (req, res, next) => {
             category: req.body.category,
             //publisher: req.body.publisher,
             //publish_date: req.body.publishedDate,
-            image: '', //open to receive updates later
+            image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flipkart.com%2Fintroductory-principles-plant-breeding%2Fp%2Fitmb8853b7b2e869&psig=AOvVaw0f7ddlWt0vHyrYtOjgYiw1&ust=1595189504743000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPjJ05DO1-oCFQAAAAAdAAAAABAD', //open to receive updates later
             //image: book_data.imageLinks.thumbnail,  // add publisher, publish date, image features.
             num_copies: req.body.num_copies
         });
