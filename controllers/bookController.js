@@ -34,9 +34,19 @@ exports.index = (req, res) => {
         },
         category_count: (callback) => {
             Category.countDocuments({}, callback);
+        },
+        books: (callback) => {
+            Book.find()
+            .populate('authors')
+            .populate('category')
+            .exec(callback);
         }
     }, (err, results) => {
-        res.render('index', {title: 'Sims Library of Poetry', error: err, data: results});
+        featured_books=[];
+        for(i=0; i<6;i++){
+            featured_books.push(results.books[Math.floor(Math.random()*results.books.length)])
+        }
+        res.render('index', {title: 'Sims Library of Poetry', error: err, data: results, featured_books: featured_books});
     });
 };
 

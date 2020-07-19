@@ -24,7 +24,7 @@ block content
       input#isbn.form-control(type='text', placeholder='ISBN13' name='isbn' value=(undefined===book ? '' : book.isbn)) 
     div.form-group
         label(for='num_copies') Number of copies:
-        input#num_copies.form-control(type='number', placeholder='Number of copies' name='num_copies' value=(undefined===book ? '' : book.num_copies) required='true')
+        input#num_copies.form-control(type='number', placeholder='Number of copies' name='num_copies' value=(undefined===book ? 1 : book.num_copies) required='true')
     div.form-group
       label Category:
       div

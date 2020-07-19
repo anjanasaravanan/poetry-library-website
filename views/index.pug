@@ -5,11 +5,11 @@ block content
   //-p #[em A community resource for the study, composition, and performance of poetry.]
   .jumbotron
     .container
-      h1 Welcome to the Sims Library Catalog!
+      h1(style="text-align:right") Sims Library Catalog
       p
-        | Explore our growing collection of anthologies, chapbooks, periodicals and more, or visit our library site to support our ongoing efforts.
-      p
-        a.btn.btn-lg.btn-primary(href='https://www.simslibraryofpoetry.org', role='button') Library Homepage »
+        | Browse our growing collection of poetry books or visit our library homepage to support our ongoing efforts.
+      //- p
+      //-   a.btn.btn-lg.btn-primary(href='https://www.simslibraryofpoetry.org', role='button') Library Homepage »
 
     //- search catalog feature
 
@@ -35,4 +35,21 @@ block content
           | #[strong Catalogued Books of Poetry By]   !{data.author_count}   
           | #[strong Featured Authors In] !{data.category_count} 
           | #[strong Categories]
+
+      for book in featured_books
+        a(href=book.url)
+          img(src=book.image, width='150', height='220', hspace='20', vspace='10')
+      br
+      br
+      .div(align='center')
+        a.btn.btn-lg.btn-primary(href='/books', role='button') Explore the collection
+
+  
+  //- .jumbotron(style="margin-top:0")
+  //-   .container
+  //-     h3(style="text-align:center") A sneak peek into our collection...
+  //-     for book in featured_books
+  //-       a(href=book.url)
+  //-         img(src=book.image, width='150', height='220', hspace='20', vspace='10')
+          
 

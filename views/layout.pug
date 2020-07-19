@@ -41,6 +41,8 @@ html(lang='en')
                 //-   a(href='#') Separated link
                 //- li
                 //-   a(href='#') One more separated link
+            li
+              a(href='https://www.simslibraryofpoetry.org') Library Homepage
           ul.nav.navbar-nav.navbar-right
             if !currentUser
               li
@@ -65,7 +67,14 @@ html(lang='en')
           //-   li
           //-     a(href='navbar-fixed.html') Fixed top
 
+    if currentUser
+      if currentUser.isAdmin
+        nav.navbar.navbar-right
+          .container-right
 
+          #navbar-collapse.collapse.navbar-right
+            li.active
+              a(href='/book/create') ISBN Book Entry
 
 
 

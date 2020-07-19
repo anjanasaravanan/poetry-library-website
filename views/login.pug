@@ -1,14 +1,16 @@
 extends layout
 
 block content
+    .container(align='center')
+        h1 Librarian Portal
 
-    h1 Login
-
-    form(method='POST' action='/login')
-        .form-group
-            label(for='username') Username 
-            input(type='username' id='username' name='username' required='true')
-        .form-group
-            label(for='password') Password 
-            input(type='password' id='password' name='password' required='true')
-        button.btn.btn-primary(type='submit') Login
+        form(method='POST' action='/login')
+            .form-group
+                label(for='username') Username
+                |      
+                input(type='username' id='username' name='username' required='true')
+            .form-group
+                label(for='password') Password
+                |   
+                input(type='password' id='password' name='password' required='true')
+            button.btn.btn-primary(type='submit') Login
