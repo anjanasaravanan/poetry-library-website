@@ -167,7 +167,7 @@ exports.book_create_post = (req, res, next) => {
                 category: req.body.category,
                 publisher: book_data.publisher,
                 publish_date: book_data.publishedDate,
-                image: (book_data.imageLinks ? book_data.imageLinks.thumbnail : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flipkart.com%2Fintroductory-principles-plant-breeding%2Fp%2Fitmb8853b7b2e869&psig=AOvVaw0f7ddlWt0vHyrYtOjgYiw1&ust=1595189504743000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPjJ05DO1-oCFQAAAAAdAAAAABAD'),
+                image: (book_data.imageLinks ? book_data.imageLinks.thumbnail : 'https://res.cloudinary.com/dgcsg67jg/image/upload/v1595190503/caecyciccpr2hwtct8my.jpg'),
                 num_copies: req.body.num_copies
             });
             console.log('original listAuthors');
@@ -521,7 +521,7 @@ exports.book_manual_post = (req, res, next) => {
             category: req.body.category,
             //publisher: req.body.publisher,
             //publish_date: req.body.publishedDate,
-            image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flipkart.com%2Fintroductory-principles-plant-breeding%2Fp%2Fitmb8853b7b2e869&psig=AOvVaw0f7ddlWt0vHyrYtOjgYiw1&ust=1595189504743000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPjJ05DO1-oCFQAAAAAdAAAAABAD', //open to receive updates later
+            image: 'https://res.cloudinary.com/dgcsg67jg/image/upload/v1595190503/caecyciccpr2hwtct8my.jpg', //open to receive updates later
             //image: book_data.imageLinks.thumbnail,  // add publisher, publish date, image features.
             num_copies: req.body.num_copies
         });
@@ -567,13 +567,18 @@ exports.book_manual_post = (req, res, next) => {
         return newBook.save();
     }).then((newBook) => {
         console.log(newBook);
-        // upload cover image
-        middleware.cloudinary.uploader.upload(req.file.path)
-        .then((result) => {
-            return Book.findByIdAndUpdate(newBook._id, {'image': result.secure_url});
-        }).then((updatedBook) => {
-            console.log(updatedBook);
-            res.redirect(updatedBook.url);
-        });
+        // upload cover image if there is one
+        if(req.file){
+            middleware.cloudinary.uploader.upload(req.file.path)
+            .then((result) => {
+                return Book.findByIdAndUpdate(newBook._id, {'image': result.secure_url});
+            }).then((updatedBook) => {
+                console.log(updatedBook);
+                res.redirect(updatedBook.url);
+            });
+        }
+        else{
+            res.redirect(newBook.url);
+        }
     }).catch((err) => {if (err) {return next(err);}});
 }

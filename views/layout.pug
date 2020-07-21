@@ -19,9 +19,21 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') Sims Library of Poetry
+          a.navbar-brand(href='https://www.simslibraryofpoetry.org')
+            img(src='https://res.cloudinary.com/dgcsg67jg/image/upload/v1595296635/sims-logo_pcgb3d.png', height='32px', width='200px')
         #navbar.navbar-collapse.collapse
           ul.nav.navbar-nav
+            //- li.active
+            //-   a(href='/') Home
+                //- li.divider
+                //- li.dropdown-header Nav header
+                //- li
+                //-   a(href='#') Separated link
+                //- li
+                //-   a(href='#') One more separated link
+            //- li
+            //-   a(href='https://www.simslibraryofpoetry.org') Library Homepage
+          ul.nav.navbar-nav.navbar-right
             li.active
               a(href='/') Home
             li.dropdown
@@ -35,15 +47,7 @@ html(lang='en')
                   a(href='/authors') Featured Authors
                 li
                   a(href='/categories') Categories
-                //- li.divider
-                //- li.dropdown-header Nav header
-                //- li
-                //-   a(href='#') Separated link
-                //- li
-                //-   a(href='#') One more separated link
-            li
-              a(href='https://www.simslibraryofpoetry.org') Library Homepage
-          ul.nav.navbar-nav.navbar-right
+                
             if !currentUser
               li
                 a(href='/register') Register
@@ -66,16 +70,6 @@ html(lang='en')
           //-     a(href='navbar-static.html') Static top
           //-   li
           //-     a(href='navbar-fixed.html') Fixed top
-
-    if currentUser
-      if currentUser.isAdmin
-        nav.navbar.navbar-right
-          .container-right
-
-          #navbar-collapse.collapse.navbar-right
-            li.active
-              a(href='/book/create') ISBN Book Entry
-
 
 
 block content
