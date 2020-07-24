@@ -144,17 +144,19 @@ exports.book_create_post = (req, res, next) => {
             }
             else {
                 var authorQueries = [];
-                book_data.authors.forEach((author) => {
-                    nameArray = formatName(author);
-                    new_first_name = nameArray[0];
-                    new_family_name = nameArray[1];
-                    authorQueries.push(
-                        Author.findOne({
-                            first_name: new_first_name,
-                            family_name: new_family_name
-                        })
-                    );
-                });
+                if(book_data.authors){
+                    book_data.authors.forEach((author) => {
+                        nameArray = formatName(author);
+                        new_first_name = nameArray[0];
+                        new_family_name = nameArray[1];
+                        authorQueries.push(
+                            Author.findOne({
+                                first_name: new_first_name,
+                                family_name: new_family_name
+                            })
+                        );
+                    });
+                }
                 return Promise.all(authorQueries);
             }
         }).then((listAuthors) => {

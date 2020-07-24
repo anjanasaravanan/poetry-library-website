@@ -20,16 +20,17 @@ block content
   
   
   ul
-    - book_list.sort(function(a, b) {
-      - if(a.authors[0] && b.authors[0]){
-          - let textA = a.authors[0].family_name.toUpperCase(); 
-          - let textB = b.authors[0].family_name.toUpperCase(); 
-          - return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-      - }
-      - else {
-        - return -1
-      - }
-    -});
+    //- - book_list.sort(function(a, b) {
+    //-   - if(a.authors[0] && b.authors[0]){
+    //-       - let textA = a.authors[0].family_name.toUpperCase(); 
+    //-       - let textB = b.authors[0].family_name.toUpperCase(); 
+    //-       - return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    //-   - }
+    //-   - else {
+    //-     - return -1
+    //-   - }
+    //- -});
+    - book_list.sort((function(a, b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}))
     hr
     each book in book_list
       .container
