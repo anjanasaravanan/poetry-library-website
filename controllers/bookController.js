@@ -223,7 +223,21 @@ exports.book_create_post = (req, res, next) => {
             });
         });
     }).catch((err) => {
-        if (err) {res.redirect('/book/manual-entry');}
+        if (err) {
+            Book.findOne({
+                isbn: req.body.isbn
+            }).populate('category').populate('author')
+            .then((found_book) => {
+                if (found_book) {
+                    //res.redirect(found_book.url);
+                    //found_book.populate('category').populate('author');
+                    res.render('book_form', {book: found_book, category_list: found_book.category, message: 'That book already exists!'})
+                }
+                else {
+                    res.redirect('/book/manual-entry');
+                }
+            });
+        }
     });
 };
 
