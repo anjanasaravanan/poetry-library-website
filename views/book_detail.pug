@@ -23,7 +23,7 @@ block content
       p #[strong ISBN:] #{(book.isbn=='' ? 'No ISBN found.' : book.isbn)}
       p #[strong Category:]&nbsp;
         each val, index in book.category
-          a(href=val.url) #{val.name}
+          a(href=val.url) #{val.name.replace(/&#x27;/g, "'")}
           if index < book.category.length - 1
             |, 
       p #[strong Available copies:] #{book_instances.length}
