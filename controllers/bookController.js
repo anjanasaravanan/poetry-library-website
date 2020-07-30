@@ -140,7 +140,8 @@ exports.book_create_post = (req, res, next) => {
             if (found_book) {
                 //res.redirect(found_book.url);
                 //found_book.populate('category').populate('author');
-                res.render('book_form', {book: found_book, category_list: found_book.category, message: 'That book already exists!'})
+                res.render('book_form', {book: found_book, category_list: req.body.category, message: 'That book already exists!'})
+                // changed found_book.category to req.body.category
             }
             else {
                 var authorQueries = [];
@@ -505,13 +506,27 @@ exports.book_manual_post = (req, res, next) => {
     if(cropIndex != -1)
         req.body.authors.splice(cropIndex);
 
+    // make sure category is an array
+    if(!(req.body.category instanceof Array)){
+        if(typeof req.body.category==='undefined')
+        req.body.category = [];
+        else
+        req.body.category = new Array(req.body.category);
+    }
+
     Book.findOne({
         title: req.body.title,
-        isbn: req.body.isbn // crossreferencing by title & isbn, messy
-    }).then((foundBook) => {
-        if (foundBook) {
-            res.redirect(foundBook.url);
+        isbn: req.body.isbn
+        //authors: req.body.authors // crossreferencing by title & isbn & author?, messy
+    }).populate('authors')
+    .then((foundBook) => {
+        if(foundBook.authors[0].name === req.body.authors[0]){
+            res.redirect(foundBook.url)
         }
+        // console.log(foundBook);
+        // if (foundBook) {
+        //     res.render('book_manual_entry', {title: 'Manual Entry', category_list: req.body.category, message: 'Another book exists with the same title!', book: foundBook});
+        
         else { // check if entered authors already exist
             var authorQueries = [];
             req.body.authors.forEach((author) => {
@@ -561,13 +576,7 @@ exports.book_manual_post = (req, res, next) => {
             } 
         }
         newBook.authors = listAuthors; // update newBook's authors
-        // make sure category is an array
-        if(!(req.body.category instanceof Array)){
-            if(typeof req.body.category==='undefined')
-            req.body.category = [];
-            else
-            req.body.category = new Array(req.body.category);
-        }
+        
         console.log('newBook');
         console.log(newBook);
         // create book instances

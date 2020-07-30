@@ -3,6 +3,10 @@ extends layout
 block content
   h1= title
 
+  if message
+    p #{message}
+    a.button.btn.btn-primary(href=book.url+'/update') Update existing book?
+  
   form(method='POST' action='' enctype='multipart/form-data')
     div.form-group
       label(for='image') Cover Image
