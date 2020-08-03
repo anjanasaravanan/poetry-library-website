@@ -15,8 +15,10 @@ block content
       img(src=book.image, align='left', width='150', height='220', hspace='20')
 
       br 
-      p #[strong Author(s):] 
-        for author, index in book.authors
+      p #[strong Author(s):]
+        
+        - book.authors.sort((function(a, b) { let textA = a.family_name; let textB = b.family_name; return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;})) 
+        each author, index in book.authors
           a(href=author.url) #{author.name}
           if index < book.authors.length - 1
             |; 

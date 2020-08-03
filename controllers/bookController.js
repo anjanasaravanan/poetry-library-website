@@ -334,11 +334,17 @@ exports.book_update_post = (req, res, next) => {
         req.body.category = new Array(req.body.category);
     }
     // crops author array
-    var cropIndex = req.body.author.indexOf('');
+    var cropIndex = req.body.authors.indexOf('');
     if(cropIndex != -1)
-        req.body.author.splice(cropIndex);
+        req.body.authors.splice(cropIndex);
     //console.log(req.body.category);
     console.log(req.body.author);
+
+    // adds additional authors
+    if (req.body.add_authors != ''){
+        req.body.authors.push(...req.body.add_authors.split(', '));
+    }
+
 
     // Sanitize fields.
     sanitizeBody('title').escape(),
@@ -359,8 +365,8 @@ exports.book_update_post = (req, res, next) => {
             // search existing authors for each entered author
             var authorQueries = [];
             console.log('second')
-            console.log(req.body.author);
-            req.body.author.forEach((author) => {
+            console.log(req.body.authors);
+            req.body.authors.forEach((author) => {
                 nameArray = formatName(author);
                 new_first_name = nameArray[0];
                 new_family_name = nameArray[1];
@@ -398,7 +404,7 @@ exports.book_update_post = (req, res, next) => {
         //console.log(listAuthors);
         for(i=0; i<listAuthors.length; i++){
             if(listAuthors[i]==null){ // author does not exist, create and save.
-                author = req.body.author[i]
+                author = req.body.authors[i]
                 nameArray = formatName(author);
                 new_first_name = nameArray[0];
                 new_family_name = nameArray[1];
@@ -507,7 +513,9 @@ exports.book_manual_post = (req, res, next) => {
         req.body.authors.splice(cropIndex);
 
     // adds on additional authors
-    req.body.authors.push(...req.body.add_authors.split(', '));
+    if (req.body.add_authors != ''){
+        req.body.authors.push(...req.body.add_authors.split(', '));
+    }
 
     console.log(req.body.authors);
 

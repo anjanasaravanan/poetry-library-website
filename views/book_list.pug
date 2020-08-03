@@ -39,6 +39,7 @@ block content
         li(style="list-style-type: none;") 
           a(href=book.url, style={'font-size':'36px', 'color': 'black'}) #{book.title}
           br
+          - book.authors.sort((function(a, b) { let textA = a.family_name; let textB = b.family_name; return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;})) 
           each author, index in book.authors
             a(href=author.url) #{author.name}
             if index < book.authors.length - 1

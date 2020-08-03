@@ -16,9 +16,13 @@ block content
     div.form-group
       label(for='authors') Authors:
       for author in book.authors
-        input#author.form-control(type='text' placeholder='Full name' name='author' value=(((author.first_name==' ') ? '' : author.first_name + ' ') + author.family_name))
+        input#author.form-control(type='text' placeholder='Full name' name='authors' value=(((author.first_name==' ') ? '' : author.first_name + ' ') + author.family_name))
       -for(var i=0; i<10-book.authors.length; i++)
-        input#author.form-control(type='text' placeholder='Enter additional author (First Last)', name='author', value='')
+        input#authors.form-control(type='text' placeholder='Enter additional author (First Last)', name='authors', value='')
+
+    div.form-group
+      label Additional Authors(s):
+      input#add-authors.form-control(type='text', placeholder='Enter additional authors here in a comma-separated list e.g. First Last, First Last, etc.' name='add_authors' value='')
 
       
 
