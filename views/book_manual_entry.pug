@@ -18,7 +18,10 @@ block content
       label Author(s):
         - for(i=0; i<10; i++)
             input#authors.form-control(type='text' placeholder='First name Last name' name='authors' value='')
-        
+    
+    div.form-group
+      label Additional Authors(s):
+      input#add-authors.form-control(type='text', placeholder='Enter additional authors here in a comma-separated list e.g. First Last, First Last, etc.' name='add_authors' value='')
         
     div.form-group
       label(for='description') Summary:

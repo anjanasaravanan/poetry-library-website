@@ -506,6 +506,11 @@ exports.book_manual_post = (req, res, next) => {
     if(cropIndex != -1)
         req.body.authors.splice(cropIndex);
 
+    // adds on additional authors
+    req.body.authors.push(...req.body.add_authors.split(', '));
+
+    console.log(req.body.authors);
+
     // make sure category is an array
     if(!(req.body.category instanceof Array)){
         if(typeof req.body.category==='undefined')
@@ -520,7 +525,7 @@ exports.book_manual_post = (req, res, next) => {
         //authors: req.body.authors // crossreferencing by title & isbn & author?, messy
     }).populate('authors')
     .then((foundBook) => {
-        if(foundBook.authors[0].name === req.body.authors[0]){
+        if(foundBook && foundBook.authors[0].name === req.body.authors[0]){
             res.redirect(foundBook.url)
         }
         // console.log(foundBook);
