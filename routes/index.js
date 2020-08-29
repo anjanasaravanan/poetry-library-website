@@ -8,7 +8,8 @@ var author_controller = require('../controllers/authorController');
 var category_controller = require('../controllers/categoryController');
 var book_instance_controller = require('../controllers/bookinstanceController');
 var user_controller = require('../controllers/userController');
-var middleware = require('../middleware/index')
+var middleware = require('../middleware/index');
+const Book = require('../models/book');
 
 /* GET home page. */
 router.get('/', book_controller.index);
@@ -64,10 +65,12 @@ router.post('/book/:id/update', middleware.isLibrarian, middleware.upload.single
 router.get('/book/:id', book_controller.book_detail);
 
 // GET request for list of all Book items.  Catalog.
-router.get('/books', book_controller.book_list);
+router.get('/books', middleware.paginateResults(Book), book_controller.book_list);
 
 // POST request on book list page, for the search feature.
 router.post('/books', book_controller.book_list_post);
+
+
 
 
 /// AUTHOR ROUTES ///

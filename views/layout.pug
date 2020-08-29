@@ -8,7 +8,6 @@ html(lang='en')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  
   body
     .container
     nav.navbar.navbar-default
@@ -54,11 +53,22 @@ html(lang='en')
               li
                 a(href='/login') Librarian Login
             else
-              li
-                a(href='#') Signed in as  #{currentUser.username}
+              //- li
+              //-   a(href='#') Signed in as  #{currentUser.username}
               if currentUser.isAdmin
-                li
-                  a(href='/librarian-portal') Librarian Portal
+                //- li
+                //-   a(href='/librarian-portal') Librarian Portal
+                li.dropdown
+                  a.dropdown-toggle(href='/librarian-portal', data-toggle='dropdown', role='button', aria-expanded='false')
+                    | Librarian Portal 
+                    span.caret
+                  ul.dropdown-menu(role='menu')
+                    li
+                      a(href='/book/create') ISBN Entry
+                    li
+                      a(href='/book/manual-entry') Manual Entry
+                    li
+                      a(href='/category/create') Create new category
               li
                 a(href='/logout') Log out 
           //- ul.nav.navbar-nav.navbar-right

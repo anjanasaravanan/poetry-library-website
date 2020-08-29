@@ -1,3 +1,52 @@
+
+// pagination
+function paginateResults(model) {
+  return async (req, res, next) => {
+    console.log('paginateResult started')
+    if (req.query.page == undefined) {
+      page = 1
+      limit = 20
+    } else {
+      page = parseInt(req.query.page)
+      limit = parseInt(req.query.limit)
+    }
+    console.log(page)
+    console.log(limit)
+
+    startIndex = (page - 1) * limit
+    endIndex = page * limit
+
+    results = {}
+
+    if (endIndex < await model.countDocuments().exec()) {
+      results.next = {
+        page: page + 1,
+        limit: limit
+      }
+    }
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit
+      }
+    }
+    try {
+      allResults = await model.find().populate('authors').populate('category').exec();
+      allResults.sort((function (a, b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA==='') ? 1 : (textB=='') ? -1 : (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}))
+      results.current = allResults.slice(startIndex, startIndex+limit)
+      //results.current = allResults.limit(limit).skip(startIndex).exec()
+
+      res.paginatedResults = results
+      next()
+    } catch (err) {
+      res.status(500).json({ message: err.message })
+    }
+  }
+}
+
+exports.paginateResults = paginateResults;
+
+// check if user is a librarian
 exports.isLibrarian = (req, res, next) => {
     if(req.isAuthenticated()) {
         if(req.user.isAdmin){

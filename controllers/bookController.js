@@ -42,6 +42,7 @@ exports.index = (req, res) => {
             .exec(callback);
         }
     }, (err, results) => {
+        // console.log(results);
         featured_books=[];
         for(i=0; i<6;i++){
             featured_books.push(results.books[Math.floor(Math.random()*results.books.length)])
@@ -55,14 +56,15 @@ exports.index = (req, res) => {
 // Display list of all Books.
 exports.book_list = (req, res, next) => {
 
-    Book.find()
-      .populate('authors')
-      .populate('category')
-      .exec(function (err, list_books) {
-        if (err) { return next(err); }
-        //Successful, so render
-        res.render('book_list', { title: 'Catalog', book_list: list_books });
-      });
+    res.render('book_list', { title: 'All Books', book_list: res.paginatedResults.current, next: res.paginatedResults.next, previous: res.paginatedResults.previous})
+    // Book.find()
+    //   .populate('authors')
+    //   .populate('category')
+    //   .exec(function (err, list_books) {
+    //     if (err) { return next(err); }
+    //     //Successful, so render
+    //     res.render('book_list', { title: 'All Books', book_list: list_books });
+    //   });
       
   };
 
@@ -263,14 +265,16 @@ exports.book_delete_post = function(req, res) {
     .then((foundBook) => {
         return Author.find({_id: {$in: foundBook.authors}})
     }).then((foundAuthors) => {
+        console.log('foundAuthors');
+        console.log(foundAuthors);
+        removeAuthorQueries = [];
         foundAuthors.forEach((foundAuthor) => {
-            removeAuthorQueries = [];
-            if(foundAuthor.books.length==1){
+            if(foundAuthor.books.length==0){
                 removeAuthorQueries.push(Author.findByIdAndRemove(foundAuthor._id));
             }
-            Promise.all(removeAuthorQueries);
         })
-    }).then(() => {
+        return Promise.all(removeAuthorQueries);
+    }).then((removedAuthors) => {
         return BookInstance.deleteMany({book: req.body.bookid})
     }).then(() => {
         res.redirect('/books')

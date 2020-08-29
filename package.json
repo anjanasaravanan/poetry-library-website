@@ -25,6 +25,8 @@
     "express-validator": "^6.5.0",
     "helmet": "^3.23.3",
     "http-errors": "~1.6.3",
+    "jquery": "^3.5.1",
+    "jsdom": "^16.4.0",
     "moment": "^2.26.0",
     "mongoose": "^5.9.18",
     "morgan": "~1.9.1",
