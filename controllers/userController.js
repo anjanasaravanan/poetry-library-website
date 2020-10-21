@@ -3,6 +3,7 @@ var async = require('async');
 
 const passport = require('passport');
 const { response } = require('express');
+const user = require('../models/user');
 
 
 exports.login_get = (req, res, next) => {
@@ -57,4 +58,11 @@ exports.logout = (req, res, next) => {
 
 exports.librarian_portal_get = (req, res, next) => {
     res.render('librarian_portal');
+}
+
+exports.checkout_get = (req, res, next) => {
+    user.findById(req.user._id)
+    .then((foundUser) => {
+        res.render('checkout', {foundBooks: foundUser.books})
+    })
 }

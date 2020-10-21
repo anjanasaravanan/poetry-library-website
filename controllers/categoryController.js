@@ -36,7 +36,24 @@ exports.category_detail = function(req, res, next) {
             err.status = 404;
             return next(err);
         }
-        res.render('category_detail', { title: results.category.name, category: results.category, category_books: results.category_books})
+        if (results.category.name==='Periodicals') {
+            sorted_periodicals = {};
+            results.category_books.forEach((magazine) => {
+                endOfTitle = magazine.title.indexOf(',');
+                title = magazine.title.substring(0,endOfTitle);
+                if (title in sorted_periodicals) {
+                    sorted_periodicals[title].push(magazine);
+                }
+                else {
+                    sorted_periodicals[title] = [magazine]
+                }
+            })
+        }
+        if (typeof sorted_periodicals !== 'undefined') {
+            res.render('category_detail', { title: results.category.name, category: results.category, category_books: results.category_books, sorted_periodicals: sorted_periodicals, periodical_keys: Object.keys(sorted_periodicals)});
+        } else {
+            res.render('category_detail', { title: results.category.name, category: results.category, category_books: results.category_books});
+        }
     });
 };
 

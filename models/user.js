@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     username: String,
     password: String,
-    isAdmin: {type: Boolean, default: false}
+    isAdmin: {type: Boolean, default: false},
+    books: [{type: Schema.Types.ObjectId, ref: 'Book'}]
 });
 
 UserSchema.plugin(passportLocalMongoose)

@@ -35,6 +35,9 @@ router.get('/logout', user_controller.logout);
 // GET librarian portal
 router.get('/librarian-portal', middleware.isLibrarian, user_controller.librarian_portal_get);
 
+// GET checkout screen
+router.get('/checkout', middleware.isLibrarian, user_controller.checkout_get)
+
 
 
 
@@ -63,6 +66,9 @@ router.post('/book/:id/update', middleware.isLibrarian, middleware.upload.single
 
 // GET request for one Book.
 router.get('/book/:id', book_controller.book_detail);
+
+// POST request to add Book to checkout list.
+router.post('/book/:id', book_controller.book_detail_post);
 
 // GET request for list of all Book items.  Catalog.
 router.get('/books', middleware.paginateResults(Book), book_controller.book_list);

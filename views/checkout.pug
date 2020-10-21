@@ -1,0 +1,12 @@
+extends layout
+
+block content
+
+    .jumbotron
+        .container
+            h1 Checkout List
+            if currentUser
+                for book in currentUser.books
+                    p #{book}
+                p #{currentUser}
+            p #{foundBooks}

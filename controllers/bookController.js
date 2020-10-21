@@ -17,6 +17,8 @@ const { category_list } = require('./categoryController');
 const { Promise } = require('bluebird');
 const { cloudinary } = require('../middleware');
 const book = require('../models/book');
+const user = require('../models/user');
+const { use } = require('passport');
 
 exports.index = (req, res) => {
     async.parallel({
@@ -110,6 +112,36 @@ exports.book_detail = function(req, res, next) {
     });
 
 };
+
+exports.book_detail_post = function (req, res, next) {
+
+
+    user.findById(req.user._id)
+    .then((foundUser) => {
+        Book.findById(req.params.id).populate('authors').populate('category')
+        .then((foundBook) => {
+            user.findByIdAndUpdate(foundUser._id, {'books': foundUser.books.push(foundBook)})
+            res.redirect('/checkout')
+            // res.send(foundUser)
+        })
+
+    })
+    // Book.findById(req.params.id).populate('authors').populate('category')
+    // .then((foundBook) => {
+    //     user.findById(req.user._id)
+    // .then((foundUser) => {
+    //     foundUser.books.push(foundBook)
+    // })
+    //     res.send(foundUser)
+    //     res.redirect('/book/'+req.params.id)
+    //     // req.user.books.push(foundBook)
+    //     // res.send(req.user)
+    //     // res.redirect('/book/'+req.params.id)
+    // })
+    .catch((err) => {
+        if (err) { return next(err); }
+    });
+}
 
 exports.book_create_get = (req, res, next) => {
     // Get all authors and categories, to add to book

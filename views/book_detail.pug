@@ -33,7 +33,14 @@ block content
       if currentUser && currentUser.isAdmin
         .row
           a.btn.btn-md.btn-primary(href=book.url+'/delete', role='button') Delete Book »
+          |  
           a.btn.btn-md.btn-primary(href=book.url+'/update', role='button') Update Book »
+          |  
+          .container(style='text-align:right')
+            form(method='POST', action='')
+              button.btn.btn-primary(type='submit', style='font-size:20px;') Add to Checkout List »
+            //a.btn.btn-md.btn-primary(href=book.url+'/check-out', role='button') Add to Checkout List »
+
       //- h4 Copies
       //- each val in book_instances
       //-   hr

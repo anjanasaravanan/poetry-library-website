@@ -6,10 +6,25 @@ block content
 
             h1= title
 
-    .container
+    .container(style="font-size:32px")
         ul
-            each category in category_list
-                p
-                    a(href=category.url) #{category.name ? category.name.replace(/&#x27;/g, "'") : ''}
+            if (typeof category_list == 'undefined')
+                p No categories found
             else
-                p No categories found.
+                - for(var i=0; i<category_list.length; i+=3)
+                    .row(style="text-align:center")
+                        .col-md-4
+                            u 
+                                a(href=category_list[i].url) #{category_list[i].name ? category_list[i].name.replace(/&#x27;/g, "'") : ''}
+                        .col-md-4
+                            u 
+                                a(href=category_list[i+1].url) #{category_list[i+1].name ? category_list[i+1].name.replace(/&#x27;/g, "'") : ''}
+                        .col-md-4
+                            u
+                                a(href=category_list[i+2].url) #{category_list[i+2].name ? category_list[i+2].name.replace(/&#x27;/g, "'") : ''}
+                    br
+                    br
+                    br
+                //- each category in category_list
+                //-     p
+                //-         a(href=category.url) #{category.name ? category.name.replace(/&#x27;/g, "'") : ''}

@@ -8,8 +8,8 @@ block content
             h1= title
 
             form(method='POST' action='')
-                label(for='name') Search by last name: 
-                input#firstname.form-control(type='text' placeholder='Enter last name here' name='name' required='true' value=(undefined===author ? '' : author.name))
+                label(for='name') Search by name: 
+                input#firstname.form-control(type='text' placeholder='Enter first/last name here' name='name' required='true' value=(undefined===author ? '' : author.name))
 
                 button.btn.btn-primary(type='submit') Submit
             if not_found

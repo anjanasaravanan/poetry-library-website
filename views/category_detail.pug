@@ -7,14 +7,42 @@ block content
             h1 #{category.name===undefined ? '' : category.name.replace(/&#x27;/g, "'")}
     div(style='margin-left:20px;margin-top:20px')
 
-    .container
+    .container(style='text-align:center')
         h4 #{category_books.length} Book(s)
 
         dl
-            each book in category_books
-                dt
-                    a(href=book.url) #{book.title}
-                dd #{book.summary}
-
+            if sorted_periodicals
+                //- p #{sorted_periodicals[periodical_keys[0]]}
+                - 
+                - for (var i=0; i<periodical_keys.length; i+=4)
+                    //- p #{periodical_keys[i]}
+                    .row(style='font-size:24px')
+                        .col-md-3
+                             u 
+                                if periodical_keys[i]
+                                    a(href='/periodicals/'+periodical_keys[i].toLowerCase().replace(/\s/g, '-')) #{periodical_keys[i]}
+                        .col-md-3
+                             u 
+                                if periodical_keys[i+1]
+                                    a(href='/periodicals/'+periodical_keys[i+1].toLowerCase().replace(/\s/g, '-')) #{periodical_keys[i+1]}
+                        .col-md-3
+                             u 
+                                if periodical_keys[i+2]
+                                    a(href='/periodicals/'+periodical_keys[i+2].toLowerCase().replace(/\s/g, '-')) #{periodical_keys[i+2]}
+                        .col-md-3
+                             u 
+                                if periodical_keys[i+3]
+                                    a(href='/periodicals/'+periodical_keys[i+3].toLowerCase().replace(/\s/g, '-')) #{periodical_keys[i+3]}
+                    br
+                //- for element in sorted_periodicals
+                //-     p #{element}
+                //-     //- a(href='/category/'+)
+                //-     br
             else
-                p This category has no books.
+                each book in category_books
+                    dt
+                        a(href=book.url) #{book.title}
+                    dd #{book.summary}
+
+                else
+                    p This category has no books.
