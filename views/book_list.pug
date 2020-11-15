@@ -63,9 +63,17 @@ block content
           if book.description===undefined
             br
             br
-          p Copies: #{book.num_copies}
+          p Available copies: #{book.num_copies-book.email.length}/#{book.num_copies}
           each val in book.category
             a(href=val.url) #{val.name}
+          br
+          if book.email.length > 0
+            if currentUser && currentUser.isAdmin
+              span.text-danger Currently checked out by
+              each email in book.email
+                p #{book.email}
+            if !currentUser && book.email.length===book.num_copies
+              span.text-danger CURRENTLY UNAVAILABLE
           //- if val.status=='Available'
           //-     span.text-success #{val.status}
           //- else if val.status=='Maintenance'

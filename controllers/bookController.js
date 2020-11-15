@@ -115,29 +115,14 @@ exports.book_detail = function(req, res, next) {
 
 exports.book_detail_post = function (req, res, next) {
 
-
-    user.findById(req.user._id)
-    .then((foundUser) => {
-        Book.findById(req.params.id).populate('authors').populate('category')
-        .then((foundBook) => {
-            user.findByIdAndUpdate(foundUser._id, {'books': foundUser.books.push(foundBook)})
-            res.redirect('/checkout')
-            // res.send(foundUser)
+    Book.findById(req.params.id).populate('authors').populate('category')
+    .then((foundBook) => {
+        user.findByIdAndUpdate(req.user._id, {$push: {'books': foundBook}}, {new: true})
+        .populate('books')
+        .then((foundUser) => {
+            res.render('checkout', {foundBooks: foundUser.books})
         })
-
     })
-    // Book.findById(req.params.id).populate('authors').populate('category')
-    // .then((foundBook) => {
-    //     user.findById(req.user._id)
-    // .then((foundUser) => {
-    //     foundUser.books.push(foundBook)
-    // })
-    //     res.send(foundUser)
-    //     res.redirect('/book/'+req.params.id)
-    //     // req.user.books.push(foundBook)
-    //     // res.send(req.user)
-    //     // res.redirect('/book/'+req.params.id)
-    // })
     .catch((err) => {
         if (err) { return next(err); }
     });

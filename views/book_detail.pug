@@ -29,16 +29,25 @@ block content
           if index < book.category.length - 1
             |, 
       p #[strong Available copies:] #{book_instances.length}
-
+      br
+      br
       if currentUser && currentUser.isAdmin
         .row
+          if book.email.length > 0
+            p Checkout list:
+            each email in book.email
+              li #{email}
+          br
           a.btn.btn-md.btn-primary(href=book.url+'/delete', role='button') Delete Book »
           |  
           a.btn.btn-md.btn-primary(href=book.url+'/update', role='button') Update Book »
           |  
           .container(style='text-align:right')
-            form(method='POST', action='')
-              button.btn.btn-primary(type='submit', style='font-size:20px;') Add to Checkout List »
+            if book.email.length < book.num_copies
+              form(method='POST', action='')
+                button.btn.btn-primary(type='submit', style='font-size:20px;') Add to Checkout List »
+            else
+              span.text-danger ALL COPIES CHECKED OUT
             //a.btn.btn-md.btn-primary(href=book.url+'/check-out', role='button') Add to Checkout List »
 
       //- h4 Copies

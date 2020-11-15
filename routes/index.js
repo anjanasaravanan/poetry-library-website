@@ -35,8 +35,29 @@ router.get('/logout', user_controller.logout);
 // GET librarian portal
 router.get('/librarian-portal', middleware.isLibrarian, user_controller.librarian_portal_get);
 
-// GET checkout screen
+// GET checkout list
 router.get('/checkout', middleware.isLibrarian, user_controller.checkout_get)
+
+// POST remove requests from checkout screen
+router.post('/checkout', middleware.isLibrarian, user_controller.checkout_post)
+
+// GET page for finalizing checkouts
+router.get('/checkout/finalize', middleware.isLibrarian, user_controller.checkout_finalize_get)
+
+// POST page for finishing checkout process
+router.post('/checkout/finalize', middleware.isLibrarian, user_controller.checkout_finalize_post)
+
+// GET email entry page for checkin
+router.get('/checkin', middleware.isLibrarian, user_controller.checkin_get)
+
+// POST email request on checkin page
+router.post('/checkin', middleware.isLibrarian, user_controller.checkin_post)
+
+// GET list of books to check in based on email
+router.get('/checkin-list', middleware.isLibrarian, user_controller.checkin_list_get)
+
+// POST removal request for checking in books
+router.post('/checkin-list', middleware.isLibrarian, user_controller.checkin_list_post)
 
 
 

@@ -2,17 +2,13 @@ extends layout
 
 block content
 
-    .jumbotron
-        .container
-            h1 Checkout List (#{foundBooks.length} items)
-
-
-    each book in foundBooks
-        .container(id="book")
+    p(style='text-align:center;font-size:24px') Book List
+    each book in booklist
+        .container(id="book", style='font-size:16px;')
             a(href=book.url)
-                img(src=book.image, align="left", hspace="20", width='150', height='220')
+                img(src=book.image, align="left", hspace="20", width='100', height='150')
             li(style="list-style-type: none;") 
-                a(href=book.url, style={'font-size':'36px', 'color': 'black'}) #{book.title}
+                a(href=book.url, style={'color': 'black'}) #{book.title}
                 br
                 - book.authors.sort((function(a, b) { let textA = a.family_name; let textB = b.family_name; return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;})) 
                 each author, index in book.authors.slice(0,10)
@@ -34,16 +30,5 @@ block content
                 form(method='POST', action='', style='text-align:center')
                         div.form-group
                             input#bookid.form-control(type='hidden', name='bookid', required='true', value=book._id)
-                        button.btn.btn-primary(type='submit', style='font-size:20px;margin-left:300px') Remove 
-                br
-                    //- »
-                br
-                br
-                br
-                hr
-    if foundBooks.length > 0
-        .container(style='text-align:center;font-size:30px')
-            a.btn.btn-lg.btn-primary(href='/checkout/finalize', role='button') Confirm and proceed »
-    else
-        .container(style='text-align:center;font-size:30px')
-            | No books added to checkout list yet.
+                            input#email.form-control(type='hidden', name='email', required='true', value=book.email)
+                        button.btn.btn-primary(type='submit', style='font-size:20px;margin-left:300px') Check back in 

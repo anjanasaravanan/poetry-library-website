@@ -13,6 +13,7 @@ var BookSchema = new Schema(
         publish_date: {type: Date},
         image: {type: String},
         num_copies: {type: Number, default: 1},
+        email: [{type: String}]
     }
 );
 

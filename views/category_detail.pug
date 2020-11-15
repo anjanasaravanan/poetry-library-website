@@ -11,7 +11,7 @@ block content
         h4 #{category_books.length} Book(s)
 
         dl
-            if sorted_periodicals
+            if category.name==='Periodicals'
                 //- p #{sorted_periodicals[periodical_keys[0]]}
                 - 
                 - for (var i=0; i<periodical_keys.length; i+=4)
