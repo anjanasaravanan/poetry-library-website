@@ -21,7 +21,8 @@ block content
                                 a(href=category_list[i+1].url) #{category_list[i+1].name ? category_list[i+1].name.replace(/&#x27;/g, "'") : ''}
                         .col-md-4
                             u
-                                a(href=category_list[i+2].url) #{category_list[i+2].name ? category_list[i+2].name.replace(/&#x27;/g, "'") : ''}
+                                if category_list[i+2] !== undefined
+                                    a(href=category_list[i+2].url) #{category_list[i+2].name ? category_list[i+2].name.replace(/&#x27;/g, "'") : ''}
                     br
                     br
                     br

@@ -30,16 +30,6 @@ block content
     if next
       a(href='/books?page='+next.page+'&limit='+next.limit) Next Page
   ul
-    //- - book_list.sort(function(a, b) {
-    //-   - if(a.authors[0] && b.authors[0]){
-    //-       - let textA = a.authors[0].family_name.toUpperCase(); 
-    //-       - let textB = b.authors[0].family_name.toUpperCase(); 
-    //-       - return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    //-   - }
-    //-   - else {
-    //-     - return -1
-    //-   - }
-    //- -});
     - book_list.sort((function(a, b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA==='') ? 1 : (textB=='') ? -1 : (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}))
     hr
     each book in book_list
