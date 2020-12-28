@@ -92,12 +92,13 @@ router.get('/book/:id', book_controller.book_detail);
 router.post('/book/:id', book_controller.book_detail_post);
 
 // GET request for list of all Book items.  Catalog.
-router.get('/books', middleware.paginateResults(Book), book_controller.book_list);
+router.get('/books', book_controller.book_list, middleware.paginateResults());
 
 // POST request on book list page, for the search feature.
 router.post('/books', book_controller.book_list_post);
 
-
+/// PERIODICALS? ///
+router.get('/periodicals/:name', book_controller.mag_list, middleware.paginateResults());
 
 
 /// AUTHOR ROUTES ///

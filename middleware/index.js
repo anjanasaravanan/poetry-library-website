@@ -1,8 +1,12 @@
 
 // pagination
-function paginateResults(model) {
+function paginateResults() {
   return async (req, res, next) => {
+
     console.log('paginateResult started')
+    rawResults = res.book_list
+    rawLength = rawResults.length
+
     if (req.query.page == undefined) {
       page = 1
       limit = 20
@@ -18,7 +22,7 @@ function paginateResults(model) {
 
     results = {}
 
-    if (endIndex < await model.countDocuments().exec()) {
+    if (endIndex < rawLength) {
       results.next = {
         page: page + 1,
         limit: limit
@@ -31,13 +35,17 @@ function paginateResults(model) {
       }
     }
     try {
-      allResults = await model.find().populate('authors').populate('category').exec();
-      allResults.sort((function (a, b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA==='') ? 1 : (textB=='') ? -1 : (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}))
-      results.current = allResults.slice(startIndex, startIndex+limit)
+      // allResults = await model.find().populate('authors').populate('category').exec();
+      // allResults.sort((function (a, b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA==='') ? 1 : (textB=='') ? -1 : (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}))
+      // results.current = allResults.slice(startIndex, startIndex+limit)
+      rawResults.sort((function(a,b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA==='') ? 1 : (textB=='') ? -1 : (textA < textB) ? -1 : (textA > textB) ? 1 : 0; }))
+      results.current = rawResults.slice(startIndex, startIndex+limit)
       //results.current = allResults.limit(limit).skip(startIndex).exec()
 
       res.paginatedResults = results
-      next()
+
+      res.render('book_list', { title: res.title, book_list: results.current, next: results.next, previous: results.previous, total_length: rawLength, prefix: res.prefix})
+    
     } catch (err) {
       res.status(500).json({ message: err.message })
     }

@@ -5,6 +5,7 @@ block content
   .jumbotron
     .container
       h1= title
+      h2 #{total_length} total results
       br
       br
     
@@ -21,14 +22,16 @@ block content
   
   .container(align='center', style='font-size:20px')
     if previous
-      | Results #{previous.page*previous.limit}-#{(previous.page+1)*previous.limit}   ................................     
-      a(href='books/?page'+previous.page+'&limit='+previous.limit) Previous Page
+      if book_list.length < 20
+      | Results #{previous.page*previous.limit}-#{previous.page*previous.limit+book_list.length}   ................................     
+      //| Results #{previous.page*previous.limit}-#{(previous.page+1)*previous.limit}   ................................     
+      a(href='/?page'+previous.page+'&limit='+previous.limit) Previous Page
     else
       | Results 1-20   ................................          
     if previous && next
       |   ||   
     if next
-      a(href='/books?page='+next.page+'&limit='+next.limit) Next Page
+      a(href='?page='+next.page+'&limit='+next.limit) Next Page
   ul
     - book_list.sort((function(a, b) { let textA = a.authors[0] ? a.authors[0].family_name.toUpperCase() : ''; let textB = b.authors[0] ? b.authors[0].family_name.toUpperCase() : ''; return (textA==='') ? 1 : (textB=='') ? -1 : (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}))
     hr
@@ -55,7 +58,7 @@ block content
             br
           p Available copies: #{book.num_copies-book.email.length}/#{book.num_copies}
           each val in book.category
-            a(href=val.url) #{val.name}
+            a(href=val.url) #{val.name}, 
           br
           if book.email.length > 0
             if currentUser && currentUser.isAdmin
@@ -80,8 +83,8 @@ block content
   
   .container
     if previous
-      a(href='books/?page'+previous.page+'&limit='+previous.limit) Previous Page
+      a(href='/?page'+previous.page+'&limit='+previous.limit) Previous Page
     if previous && next
       |   ||   
     if next
-      a(href='/books?page='+next.page+'&limit='+next.limit) Next Page
+      a(href='?page='+next.page+'&limit='+next.limit) Next Page

@@ -58,7 +58,16 @@ exports.index = (req, res) => {
 // Display list of all Books.
 exports.book_list = (req, res, next) => {
 
-    res.render('book_list', { title: 'All Books', book_list: res.paginatedResults.current, next: res.paginatedResults.next, previous: res.paginatedResults.previous})
+    Book.find().populate('authors').populate('category')
+        .exec((err, listOfBooks) => {
+            if (err) {return next(err)}
+            res.book_list = listOfBooks
+            res.title = 'All Books'
+            res.prefix = 'books'
+            next()
+        })
+
+    //res.render('book_list', { title: 'All Books', book_list: res.paginatedResults.current, next: res.paginatedResults.next, previous: res.paginatedResults.previous})
     // Book.find()
     //   .populate('authors')
     //   .populate('category')
@@ -640,4 +649,29 @@ exports.book_manual_post = (req, res, next) => {
             res.redirect(newBook.url);
         }
     }).catch((err) => {if (err) {return next(err);}});
+}
+
+exports.mag_list = (req, res, next) => {
+    mag_name = req.params.name.replace(/-/g,' ')
+    Book.find({title: {$regex: mag_name+',', $options: "$i"}}).populate('authors').populate('category')
+        .exec((err, listOfBooks) => {
+            if (err) {return next(err);}
+            res.book_list = listOfBooks
+            res.title = mag_name.split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')
+            res.prefix = 'periodicals/' + req.params.name
+            next()
+        })
+    // middleware.paginateResults(Book.find({title: {$regex: req.params.name+',', $options: "$i"}}).populate('authors').populate('category'))
+    // res.render('book_list', { title: res.params.name + ' Magazine', book_list: res.current, next: res.next, previous: res.previous})
+    // .then((foundMags) => {
+    //     // res.render('book_list', {book_list: foundMags})
+    //     res.render('book_list', { title: req.params.name + ' Magazine', book_list: res.paginatedResults.current, next: res.paginatedResults.next, previous: res.paginatedResults.previous})
+    
+    // })
+    // .catch((err) => {
+    //     if(err) {
+    //         return next(err);
+    //     }
+    // })
+    
 }

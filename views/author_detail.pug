@@ -23,7 +23,7 @@ block content
                     dd #{(book.description===undefined ? '' : (book.description).substr(0, 200))}...
                     br
                     each val in book.category
-                        a(href=val.url) #{val.name}
+                        a(href=val.url) #{val.name}, 
                 
 
             else
